@@ -1,0 +1,32 @@
+{
+    "bufferNum":4,"blockNum":64,"windowWidth":800,"windowHeight":600,"shaderPath":"BasicEffect.fx",
+    "Drums":[
+        {"name":"bass","audioName":"bass","playEvent":"bass","volumn":"1.0","switchLenght":400},
+        {"name":"bass","audioName":"bass","playEvent":"bass","volumn":"1.0","switchLenght":400}
+    ],
+    "KeyEvents":[
+        {"name":"bass","Keys":[
+            {"name":"S","action":"press","value":0.8},
+            {"name":"A","action":"press","value":0.8}
+        ]},
+        {"name":"snare","Keys":[
+            {"name":"J","action":"press","value":0.8},
+            {"name":"N","action":"press","value":0.8},
+            {"name":"COMMA","action":"press","value":0.8},
+            {"name":"X","action":"press","value":0.8}
+        ]}
+    ],
+    "PlayMutexes":[
+        {"name":"hihat","drums":[
+            {"name":"hihatOpen"},
+            {"name":"hihatClose"}
+        ]}
+    ],
+    "Models":[
+        {"name":"quad", "Points":[
+            [1,2,3],[4,5,6],[7,8,9]
+        ]}
+
+    ]
+    
+}

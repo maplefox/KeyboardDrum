@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="源文件\Visual">
+      <UniqueIdentifier>{54e130d3-2a3f-41a7-9184-6de6764ce7e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Visual">
+      <UniqueIdentifier>{1cf6df9d-728a-4018-a7b9-2e9e1fd83e09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Audio">
+      <UniqueIdentifier>{49c27e86-ceba-45aa-86a5-ce0b6b721e0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Utilities">
+      <UniqueIdentifier>{218d7248-926b-4479-ac27-869afb84725a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Audio">
+      <UniqueIdentifier>{5518a374-8c01-45c0-9a84-9aa53114e563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Utilities">
+      <UniqueIdentifier>{294e6143-e046-480a-9991-3e953be78b3f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h">
+      <Filter>头文件\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>头文件\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine.h">
+      <Filter>头文件\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualDrum.h">
+      <Filter>头文件\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioDrum.h">
+      <Filter>头文件\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioEngine.h">
+      <Filter>头文件\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioMixer.h">
+      <Filter>头文件\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="DrumInput.h">
+      <Filter>头文件\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="DrumProcessor.h">
+      <Filter>头文件\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardInput.h">
+      <Filter>头文件\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="LibraryLoader.h">
+      <Filter>头文件\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="RIFFReader.h">
+      <Filter>头文件\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeDef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Particles.h">
+      <Filter>头文件\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MapleTime.h" />
+    <ClInclude Include="GameException.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>头文件\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardDrum.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XMLDrumLoader.h">
+      <Filter>头文件\Utilities</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="VisualDrum.cpp">
+      <Filter>源文件\Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>源文件\Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardDrum.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>源文件\Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioDrum.cpp">
+      <Filter>源文件\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioEngine.cpp">
+      <Filter>源文件\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioMixer.cpp">
+      <Filter>源文件\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="DrumInput.cpp">
+      <Filter>源文件\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="DrumProcessor.cpp">
+      <Filter>源文件\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardInput.cpp">
+      <Filter>源文件\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="LibraryLoader.cpp">
+      <Filter>源文件\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="RIFFReader.cpp">
+      <Filter>源文件\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MapleTime.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameException.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>源文件\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="XMLDrumLoader.cpp">
+      <Filter>源文件\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine.cpp">
+      <Filter>源文件\Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="Particles.cpp">
+      <Filter>源文件\Visual</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

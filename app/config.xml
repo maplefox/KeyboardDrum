@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DrumConfig>
+
+
+  <KeyboardDrum  windowWidth="1600" windowHeight="900" >
+
+    <AudioDrum blockNum="32">
+      <Input  doubleDiscount="0.3" doubleJudge="0.02">
+        <KeyEvents>
+          <!--Key action can be one of the four enum: press/release/down/up ,down and up are not avalible now
+          value is 1 by default -->
+          <!-- Action can be play/stop -->
+          <KeyEvent name ="bass">
+            <Key name ="S" action ="press" value="0.8"/>
+            <Key name ="A" action ="press"/>
+          </KeyEvent>
+          <KeyEvent name ="snare">
+            <Key name ="J" action ="press"/>
+            <Key name ="N" action ="press"/>
+            <Key name ="COMMA" action ="press"/>
+            <Key name ="X" action ="press"/>
+          </KeyEvent>
+          <KeyEvent name ="tomA">
+            <Key name ="I" action ="press"/>
+            <Key name ="Y" action ="press"/>
+          </KeyEvent>
+          <KeyEvent name ="tomB">
+            <Key name ="U" action ="press"/>
+            <Key name ="9" action ="press"/>
+            <Key name ="T" action ="press"/>
+            <Key name ="7" action ="press"/>
+          </KeyEvent>
+          <KeyEvent name ="tomC">
+            <Key name ="6" action ="press"/>
+            <Key name ="8" action ="press"/>
+          </KeyEvent>
+          <KeyEvent name ="crashA">
+            <Key name ="D" action ="press"/>
+          </KeyEvent>
+          <KeyEvent name ="crashB">
+            <Key name ="C" action ="press"/>
+          </KeyEvent>
+          <KeyEvent name ="ride">
+            <Key name ="L" action ="press"/>
+          </KeyEvent>
+          <KeyEvent name ="hihatClose">
+            <Key name ="K" action ="press"/>
+            <Key name ="M" action ="press"/>
+          </KeyEvent>
+          <KeyEvent name ="hihatOpen">
+            <Key name ="O" action ="press"/>
+            <Key name ="P" action ="press"/>
+          </KeyEvent>
+          <KeyEvent name ="hihatOpenStop">
+            <Key name ="F" action ="press"/>
+            <Key name ="P" action ="release"/>
+          </KeyEvent>
+        </KeyEvents>
+      </Input>
+      <Processor >
+        <AudioDatas folderPath="drumEx/">
+
+          <AudioData name="bass" path="bass.wav" />
+          <AudioData name="snare" path="snare.wav" />
+          <AudioData name="tomA" path="tomA.wav"  />
+          <AudioData name="tomB" path="tomB.wav"   />
+          <AudioData name="tomC" path="tomC.wav"  />
+          <AudioData name="crashA" path="crashA.wav"  />
+          <AudioData name="crashB" path="crashB.wav"  />
+          <AudioData name="ride" path="ride.wav"  />
+          <AudioData name="hihatOpen" path="hihatOpenHit.wav" />
+          <AudioData name="hihatClose" path="hihatCloseHit.wav"  />
+        </AudioDatas>
+
+        <Drums>
+          <Drum name="bass" audioName = 'bass' playEvent = 'bass' volume="1"  switchLength="400"/>
+          <Drum name="snare" audioName = 'snare' playEvent = 'snare' volume="1"  />
+          <Drum name="tomA" audioName = 'tomA' playEvent = 'tomA'   volume="1"  />
+          <Drum name="tomB" audioName = 'tomB' playEvent = 'tomB'  volume="1"  />
+          <Drum name="tomC" audioName = 'tomC' playEvent = 'tomC'  volume="1"  />
+          <Drum name="crashA" audioName = 'crashA' playEvent = 'crashA'  volume="0.5"  />
+          <Drum name="crashB" audioName = 'crashB' playEvent = 'crashB'  volume="0.5"  />
+          <Drum name="ride" audioName = 'ride' playEvent = 'ride' volume="1" />
+          <Drum name="hihatOpen" audioName = 'hihatOpen' playEvent = 'hihatOpen' stopEvent ='hihatOpenStop' volume="1" switchLength="800" disappearDefer="0" disappearLength ="400"   />
+          <Drum name="hihatClose" audioName = 'hihatClose' playEvent = 'hihatClose'  volume="1" switchLength="400" />
+        </Drums>
+
+        <PlayMutexes>
+          <!-- Sounds in a MutexPlay,only one can be played at the same time -->
+          <PlayMutex name="hihat">
+            <MutexDrum name ="hihatOpen" />
+            <MutexDrum name ="hihatClose" />
+          </PlayMutex>
+        </PlayMutexes>
+      </Processor>
+      <AudioEngine bufferNum="32" ></AudioEngine>
+    </AudioDrum>
+
+    <VisualDrum>
+
+      <Particles hueWidth ="0" hueVel="0.02">
+        <Models>
+          <Model name = "quad">
+            [
+            [0,1,0], [-1,0,0], [0,0,1.5],
+            [-1,0,0], [0,-1,0], [0,0,1.5],
+            [0,-1,0], [1,0,0], [0,0,1.5],
+            [1,0,0], [0,1,0], [0,0,1.5],
+            [1,0,0], [0,1,0], [-1,0,0],
+            [-1,0,0], [0,-1,0], [1,0,0]
+            ]
+          </Model>
+        </Models>
+        <Emitters>
+          <Emitter event="bass" lifetime = "1.5" model= "quad" objNum = "7" hue = "0.2" kDrag = "3"  gamma="2"  brightness = "0.8" scale = "8.0"  spreadSpeed = "600"  axisRotateSpeed = "1"  selfRotateSpeed = "1" appearPlace = "10"  />
+          <Emitter event="snare" lifetime = "1.5" model= "quad" objNum = "7" hue = "0.5" kDrag = "3"  gamma="2" brightness = "0.8" scale = "8.0"  spreadSpeed = "600"  axisRotateSpeed = "1"  selfRotateSpeed = "1" appearPlace = "10"  />
+          <Emitter event="hihatClose" lifetime = "0.5" model= "quad" objNum = "7" hue = "0.6" kDrag = "3"  gamma="2" brightness = "0.8" scale = "8.0"  spreadSpeed = "600"  axisRotateSpeed = "1"  selfRotateSpeed = "1" appearPlace = "10"  />
+        </Emitters>
+      </Particles>
+
+      <Camera fov = "0.8"  radius="300.0" kDrag = "2" regress="8" slope="0.4">
+        <Movements>
+          <Movement event = "bass" rad = "0.8" power="1" roll = "0.02"/>
+          <Movement event = "snare" rad = "-0.8" power="1	" roll = "-0.02" />
+        </Movements>
+      </Camera>
+
+      <GraphicsEngine shaderPath = "BasicEffect.fx">
+
+      </GraphicsEngine>
+    </VisualDrum>
+
+  </KeyboardDrum>
+
+  <KeycodeDef>
+    <Keycode name="ESCAPE" value="0x01"/>
+    <Keycode name="1" value="0x02"/>
+    <Keycode name="2" value="0x03"/>
+    <Keycode name="3" value="0x04"/>
+    <Keycode name="4" value="0x05"/>
+    <Keycode name="5" value="0x06"/>
+    <Keycode name="6" value="0x07"/>
+    <Keycode name="7" value="0x08"/>
+    <Keycode name="8" value="0x09"/>
+    <Keycode name="9" value="0x0A"/>
+    <Keycode name="0" value="0x0B"/>
+    <Keycode name="MINUS" value="0x0C"/>
+    <Keycode name="EQUALS" value="0x0D"/>
+    <Keycode name="BACK" value="0x0E"/>
+    <Keycode name="TAB" value="0x0F"/>
+    <Keycode name="Q" value="0x10"/>
+    <Keycode name="W" value="0x11"/>
+    <Keycode name="E" value="0x12"/>
+    <Keycode name="R" value="0x13"/>
+    <Keycode name="T" value="0x14"/>
+    <Keycode name="Y" value="0x15"/>
+    <Keycode name="U" value="0x16"/>
+    <Keycode name="I" value="0x17"/>
+    <Keycode name="O" value="0x18"/>
+    <Keycode name="P" value="0x19"/>
+    <Keycode name="LBRACKET" value="0x1A"/>
+    <Keycode name="RBRACKET" value="0x1B"/>
+    <Keycode name="RETURN" value="0x1C"/>
+    <Keycode name="LCONTROL" value="0x1D"/>
+    <Keycode name="A" value="0x1E"/>
+    <Keycode name="S" value="0x1F"/>
+    <Keycode name="D" value="0x20"/>
+    <Keycode name="F" value="0x21"/>
+    <Keycode name="G" value="0x22"/>
+    <Keycode name="H" value="0x23"/>
+    <Keycode name="J" value="0x24"/>
+    <Keycode name="K" value="0x25"/>
+    <Keycode name="L" value="0x26"/>
+    <Keycode name="SEMICOLON" value="0x27"/>
+    <Keycode name="APOSTROPHE" value="0x28"/>
+    <Keycode name="GRAVE" value="0x29"/>
+    <Keycode name="LSHIFT" value="0x2A"/>
+    <Keycode name="BACKSLASH" value="0x2B"/>
+    <Keycode name="Z" value="0x2C"/>
+    <Keycode name="X" value="0x2D"/>
+    <Keycode name="C" value="0x2E"/>
+    <Keycode name="V" value="0x2F"/>
+    <Keycode name="B" value="0x30"/>
+    <Keycode name="N" value="0x31"/>
+    <Keycode name="M" value="0x32"/>
+    <Keycode name="COMMA" value="0x33"/>
+    <Keycode name="PERIOD" value="0x34"/>
+    <Keycode name="SLASH" value="0x35"/>
+    <Keycode name="RSHIFT" value="0x36"/>
+    <Keycode name="MULTIPLY" value="0x37"/>
+    <Keycode name="LMENU" value="0x38"/>
+    <Keycode name="SPACE" value="0x39"/>
+    <Keycode name="CAPITAL" value="0x3A"/>
+    <Keycode name="F1" value="0x3B"/>
+    <Keycode name="F2" value="0x3C"/>
+    <Keycode name="F3" value="0x3D"/>
+    <Keycode name="F4" value="0x3E"/>
+    <Keycode name="F5" value="0x3F"/>
+    <Keycode name="F6" value="0x40"/>
+    <Keycode name="F7" value="0x41"/>
+    <Keycode name="F8" value="0x42"/>
+    <Keycode name="F9" value="0x43"/>
+    <Keycode name="F10" value="0x44"/>
+    <Keycode name="NUMLOCK" value="0x45"/>
+    <Keycode name="SCROLL" value="0x46"/>
+    <Keycode name="NUMPAD7" value="0x47"/>
+    <Keycode name="NUMPAD8" value="0x48"/>
+    <Keycode name="NUMPAD9" value="0x49"/>
+    <Keycode name="SUBTRACT" value="0x4A"/>
+    <Keycode name="NUMPAD4" value="0x4B"/>
+    <Keycode name="NUMPAD5" value="0x4C"/>
+    <Keycode name="NUMPAD6" value="0x4D"/>
+    <Keycode name="ADD" value="0x4E"/>
+    <Keycode name="NUMPAD1" value="0x4F"/>
+    <Keycode name="NUMPAD2" value="0x50"/>
+    <Keycode name="NUMPAD3" value="0x51"/>
+    <Keycode name="NUMPAD0" value="0x52"/>
+    <Keycode name="DECIMAL" value="0x53"/>
+    <Keycode name="OEM_102" value="0x56"/>
+    <Keycode name="F11" value="0x57"/>
+    <Keycode name="F12" value="0x58"/>
+    <Keycode name="F13" value="0x64"/>
+    <Keycode name="F14" value="0x65"/>
+    <Keycode name="F15" value="0x66"/>
+    <Keycode name="KANA" value="0x70"/>
+    <Keycode name="ABNT_C1" value="0x73"/>
+    <Keycode name="CONVERT" value="0x79"/>
+    <Keycode name="NOCONVERT" value="0x7B"/>
+    <Keycode name="YEN" value="0x7D"/>
+    <Keycode name="ABNT_C2" value="0x7E"/>
+    <Keycode name="NUMPADEQUALS" value="0x8D"/>
+    <Keycode name="PREVTRACK" value="0x90"/>
+    <Keycode name="AT" value="0x91"/>
+    <Keycode name="COLON" value="0x92"/>
+    <Keycode name="UNDERLINE" value="0x93"/>
+    <Keycode name="KANJI" value="0x94"/>
+    <Keycode name="STOP" value="0x95"/>
+    <Keycode name="AX" value="0x96"/>
+    <Keycode name="UNLABELED" value="0x97"/>
+    <Keycode name="NEXTTRACK" value="0x99"/>
+    <Keycode name="NUMPADENTER" value="0x9C"/>
+    <Keycode name="RCONTROL" value="0x9D"/>
+    <Keycode name="MUTE" value="0xA0"/>
+    <Keycode name="CALCULATOR" value="0xA1"/>
+    <Keycode name="PLAYPAUSE" value="0xA2"/>
+    <Keycode name="MEDIASTOP" value="0xA4"/>
+    <Keycode name="VOLUMEDOWN" value="0xAE"/>
+    <Keycode name="VOLUMEUP" value="0xB0"/>
+    <Keycode name="WEBHOME" value="0xB2"/>
+    <Keycode name="NUMPADCOMMA" value="0xB3"/>
+    <Keycode name="DIVIDE" value="0xB5"/>
+    <Keycode name="SYSRQ" value="0xB7"/>
+    <Keycode name="RMENU" value="0xB8"/>
+    <Keycode name="PAUSE" value="0xC5"/>
+    <Keycode name="HOME" value="0xC7"/>
+    <Keycode name="UP" value="0xC8"/>
+    <Keycode name="PRIOR" value="0xC9"/>
+    <Keycode name="LEFT" value="0xCB"/>
+    <Keycode name="RIGHT" value="0xCD"/>
+    <Keycode name="END" value="0xCF"/>
+    <Keycode name="DOWN" value="0xD0"/>
+    <Keycode name="NEXT" value="0xD1"/>
+    <Keycode name="INSERT" value="0xD2"/>
+    <Keycode name="DELETE" value="0xD3"/>
+    <Keycode name="LWIN" value="0xDB"/>
+    <Keycode name="RWIN" value="0xDC"/>
+    <Keycode name="APPS" value="0xDD"/>
+    <Keycode name="POWER" value="0xDE"/>
+    <Keycode name="SLEEP" value="0xDF"/>
+    <Keycode name="WAKE" value="0xE3"/>
+    <Keycode name="WEBSEARCH" value="0xE5"/>
+    <Keycode name="WEBFAVORITES" value="0xE6"/>
+    <Keycode name="WEBREFRESH" value="0xE7"/>
+    <Keycode name="WEBSTOP" value="0xE8"/>
+    <Keycode name="WEBFORWARD" value="0xE9"/>
+    <Keycode name="WEBBACK" value="0xEA"/>
+    <Keycode name="MYCOMPUTER" value="0xEB"/>
+    <Keycode name="MAIL" value="0xEC"/>
+    <Keycode name="MEDIASELECT" value="0xED"/>
+  </KeycodeDef>
+</DrumConfig>   

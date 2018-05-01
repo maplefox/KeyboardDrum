@@ -1,0 +1,204 @@
+#include "Common.h"
+#include "Game.h"
+#include "GameException.h"
+
+namespace MapleDrum
+{
+	const UINT Game::DefaultScreenWidth = 1024;
+	const UINT Game::DefaultScreenHeight = 768;
+	const UINT Game::DefaultFrameRate = 60;
+	const UINT Game::DefaultMultiSamplingCount = 4;
+
+	Game::Game(int screenWidth, int screenHeight)
+		: mWindow(),
+		mScreenWidth(screenWidth), mScreenHeight(screenHeight),
+		mDirect3DDevice(nullptr), mDirect3DDeviceContext(nullptr), mSwapChain(nullptr),
+		mFrameRate(DefaultFrameRate), mIsFullScreen(false),
+		mMultiSamplingCount(DefaultMultiSamplingCount), mMultiSamplingQualityLevels(0),
+		mDepthStencilBuffer(nullptr), mRenderTargetView(nullptr), mDepthStencilView(nullptr)
+	{
+
+	}
+
+	Game::~Game()
+	{
+		
+	}
+
+	
+
+	void Game::Release()
+	{
+		ReleaseObject(mRenderTargetView);
+		ReleaseObject(mDepthStencilView);
+		ReleaseObject(mSwapChain);
+		ReleaseObject(mDepthStencilBuffer);
+
+		if (mDirect3DDeviceContext != nullptr)
+		{
+			mDirect3DDeviceContext->ClearState();
+		}
+
+		ReleaseObject(mDirect3DDeviceContext);
+		ReleaseObject(mDirect3DDevice);
+
+
+	}
+
+
+
+	void Game::InitializeDirectX()
+	{
+		HRESULT hr;
+		UINT createDeviceFlags = 0;
+
+#if defined(DEBUG) || defined(_DEBUG)  
+		createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
+		D3D_FEATURE_LEVEL featureLevels[] = {
+			D3D_FEATURE_LEVEL_11_0,
+			D3D_FEATURE_LEVEL_10_1,
+			D3D_FEATURE_LEVEL_10_0
+		};
+
+		ID3D11Device* direct3DDevice = nullptr;
+		ID3D11DeviceContext* direct3DDeviceContext = nullptr;
+		D3D_FEATURE_LEVEL featureLevel;
+		if (FAILED(hr = D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, createDeviceFlags, featureLevels, ARRAYSIZE(featureLevels), D3D11_SDK_VERSION, &direct3DDevice, &featureLevel, &direct3DDeviceContext)))
+		{
+			throw GameException("D3D11CreateDevice() failed", hr);
+		}
+
+		if (FAILED(hr = direct3DDevice->QueryInterface(__uuidof(ID3D11Device1), reinterpret_cast<void**>(&mDirect3DDevice))))
+		{
+			throw GameException("ID3D11Device::QueryInterface() failed", hr);
+		}
+
+		if (FAILED(hr = direct3DDeviceContext->QueryInterface(__uuidof(ID3D11DeviceContext1), reinterpret_cast<void**>(&mDirect3DDeviceContext))))
+		{
+			throw GameException("ID3D11Device::QueryInterface() failed", hr);
+		}
+
+		ReleaseObject(direct3DDevice);
+		ReleaseObject(direct3DDeviceContext);
+
+		mDirect3DDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, mMultiSamplingCount, &mMultiSamplingQualityLevels);
+		if (mMultiSamplingQualityLevels == 0)
+		{
+			throw GameException("Unsupported multi-sampling quality");
+		}
+
+		DXGI_SWAP_CHAIN_DESC1 swapChainDesc;
+		ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
+		swapChainDesc.Width = mScreenWidth;
+		swapChainDesc.Height = mScreenHeight;
+		swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+
+		swapChainDesc.SampleDesc.Count = mMultiSamplingCount;
+		swapChainDesc.SampleDesc.Quality = mMultiSamplingQualityLevels - 1;
+
+
+
+		swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		swapChainDesc.BufferCount = 1;
+		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+
+		IDXGIDevice* dxgiDevice = nullptr;
+		if (FAILED(hr = mDirect3DDevice->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(&dxgiDevice))))
+		{
+			throw GameException("ID3D11Device::QueryInterface() failed", hr);
+		}
+
+		IDXGIAdapter *dxgiAdapter = nullptr;
+		if (FAILED(hr = dxgiDevice->GetParent(__uuidof(IDXGIAdapter), reinterpret_cast<void**>(&dxgiAdapter))))
+		{
+			ReleaseObject(dxgiDevice);
+			throw GameException("IDXGIDevice::GetParent() failed retrieving adapter.", hr);
+		}
+
+		IDXGIFactory2* dxgiFactory = nullptr;
+		if (FAILED(hr = dxgiAdapter->GetParent(__uuidof(IDXGIFactory2), reinterpret_cast<void**>(&dxgiFactory))))
+		{
+			ReleaseObject(dxgiDevice);
+			ReleaseObject(dxgiAdapter);
+			throw GameException("IDXGIAdapter::GetParent() failed retrieving factory.", hr);
+		}
+
+		DXGI_SWAP_CHAIN_FULLSCREEN_DESC fullScreenDesc;
+		ZeroMemory(&fullScreenDesc, sizeof(fullScreenDesc));
+		fullScreenDesc.RefreshRate.Numerator = 30;
+		fullScreenDesc.RefreshRate.Denominator = 1;
+		fullScreenDesc.Windowed = !mIsFullScreen;
+
+		if (FAILED(hr = dxgiFactory->CreateSwapChainForHwnd(dxgiDevice, mWindow, &swapChainDesc, &fullScreenDesc, nullptr, &mSwapChain)))
+		{
+			ReleaseObject(dxgiDevice);
+			ReleaseObject(dxgiAdapter);
+			ReleaseObject(dxgiFactory);
+			throw GameException("IDXGIDevice::CreateSwapChainForHwnd() failed.", hr);
+		}
+
+		ReleaseObject(dxgiDevice);
+		ReleaseObject(dxgiAdapter);
+		ReleaseObject(dxgiFactory);
+
+		ID3D11Texture2D* backBuffer;
+		
+		if (FAILED(hr = mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer))))
+		{
+			throw GameException("IDXGISwapChain::GetBuffer() failed.", hr);
+		}
+		D3D11_TEXTURE2D_DESC backBufferDesc;
+		backBuffer->GetDesc(&backBufferDesc);
+		
+		if (FAILED(hr = mDirect3DDevice->CreateRenderTargetView(backBuffer, nullptr, &mRenderTargetView)))
+		{
+			ReleaseObject(backBuffer);
+			throw GameException("IDXGIDevice::CreateRenderTargetView() failed.", hr);
+		}
+		
+		ReleaseObject(backBuffer);
+
+
+		D3D11_TEXTURE2D_DESC depthStencilDesc;
+		ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
+		depthStencilDesc.Width = mScreenWidth;
+		depthStencilDesc.Height = mScreenHeight;
+		depthStencilDesc.MipLevels = 1;
+		depthStencilDesc.ArraySize = 1;
+		depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+
+
+
+		depthStencilDesc.SampleDesc.Count = mMultiSamplingCount;
+		depthStencilDesc.SampleDesc.Quality = mMultiSamplingQualityLevels - 1;
+
+
+
+		if (FAILED(hr = mDirect3DDevice->CreateTexture2D(&depthStencilDesc, nullptr, &mDepthStencilBuffer)))
+		{
+			throw GameException("IDXGIDevice::CreateTexture2D() failed.", hr);
+		}
+
+		if (FAILED(hr = mDirect3DDevice->CreateDepthStencilView(mDepthStencilBuffer, nullptr, &mDepthStencilView)))
+		{
+			throw GameException("IDXGIDevice::CreateDepthStencilView() failed.", hr);
+		}
+
+
+		mDirect3DDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
+		D3D11_VIEWPORT mViewport;
+		mViewport.TopLeftX = 0.0f;
+		mViewport.TopLeftY = 0.0f;
+		mViewport.Width = static_cast<float>(mScreenWidth);
+		mViewport.Height = static_cast<float>(mScreenHeight);
+		mViewport.MinDepth = 0.0f;
+		mViewport.MaxDepth = 1.0f;
+
+		mDirect3DDeviceContext->RSSetViewports(1, &mViewport);
+	}
+}
