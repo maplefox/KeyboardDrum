@@ -11,8 +11,10 @@ Demo at https://www.bilibili.com/video/av22777922.
 
 Windows10, DirectX11, XAudio2
 
-## Introductions:
+## Install
 
+To edit the project(source), clone all and open build/KeyboardDrum.sln.
+To run the binary program, just download the folder app and open app/Host.exe. 
 Edit config.xml to set key maps and other effects. I haven't implement UI to make settings.
 Folder drumEx contains the audio files of drums.
 
