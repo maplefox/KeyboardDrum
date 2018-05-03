@@ -9,7 +9,10 @@ DrumProcessor::DrumProcessor(int blockNum,	int channelNum,	int mutexNum,
 	mBlockNum(blockNum), mAudioMixer(channelNum,blockNum),
 	mDrumMutexes(mutexNum), mDrumStates(drumStates),mAudioDatas(audioDatas)
 {
-
+	for (auto& mutex : mDrumMutexes)
+	{
+		mutex = -1;
+	}
 }
 
 
@@ -58,10 +61,7 @@ void DrumProcessor::StopAll()
 
 void DrumProcessor::ProcessInput()
 {
-	for (auto& mutex : mDrumMutexes)
-	{
-		mutex = -1;
-	}
+	
 	auto& keyEvents = *mKeyEvents;
 	
 	for (auto& drum : mDrumStates)
@@ -73,12 +73,6 @@ void DrumProcessor::ProcessInput()
 		bool toPlay = drum.keyPlayId != -1 && keyEvents[drum.keyPlayId].type;
 		bool toStop = drum.keyStopId != -1 && keyEvents[drum.keyStopId].type;
 		bool mutexed = false;
-		if (drum.mutexId != -1)
-		{
-			auto& mutex = mDrumMutexes[drum.mutexId];
-			toPlay = toPlay && mutex == -1;
-			mutexed = mutex != -1;
-		}
 		
 		if (toPlay)
 		{
@@ -104,10 +98,20 @@ void DrumProcessor::ProcessInput()
 				drum.curPos = 0;
 				break;
 			}
-			if(drum.mutexId !=  -1)
+			if (drum.mutexId != -1)
+			{
 				mDrumMutexes[drum.mutexId] = drum.id;
+				printf("id:%d set mutex\n",drum.id);
+			}
+				
 
 			
+		}
+
+		if (drum.mutexId != -1)
+		{
+			auto& mutex = mDrumMutexes[drum.mutexId];
+			mutexed = mutex != -1 && mutex != drum.id;
 		}
 
 		if (drum.playState == Playing || drum.playState == Switching)
@@ -115,8 +119,9 @@ void DrumProcessor::ProcessInput()
 
 			if (mutexed)
 			{
+				printf("id:%d mutexed\n", drum.id);
 				drum.playState = Disappear;
-				drum.switchLength = drum.curPos;
+				drum.switchPos = drum.curPos;
 				drum.shadeLength = drum.switchLength;
 				drum.stopPos = Min(audio.blockNum, drum.curPos + drum.shadeLength);
 			}
