@@ -5,8 +5,6 @@ A program that can make you play drum by keyboard.
 
 A visual effect are included in it.
 
-Demo at https://www.bilibili.com/video/av22777922. 
-
 ## Requirement:
 
 Windows10, DirectX11, XAudio2
